@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Math</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1e1e1e;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 40px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            font-size: 20px;
+        }
+
+        .hearts {
+            color: red;
+        }
+
+        .task {
+            font-size: 28px;
+            margin: 40px 0;
+        }
+
+        input {
+            font-size: 22px;
+            padding: 10px;
+            width: 120px;
+            text-align: center;
+        }
+
+        .game-over {
+            font-size: 28px;
+            color: red;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Quick Math</h1>
+
+    <div class="top-bar">
+        <div id="score">Score: 0</div>
+        <div id="hearts" class="hearts">❤❤❤</div>
+    </div>
+
+    <div id="game">
+        <div id="task" class="task"></div>
+        <input id="answer" type="number" autofocus>
+    </div>
+
+    <div id="gameOver" class="game-over" style="display:none;">
+        Game Over! Žiadne životy!
+    </div>
+
+    <script>
+        let hearts = 3;
+        let score = 0;
+        let correctAnswer = 0;
+
+        const scoreEl = document.getElementById("score");
+        const heartsEl = document.getElementById("hearts");
+        const taskEl = document.getElementById("task");
+        const answerEl = document.getElementById("answer");
+        const gameOverEl = document.getElementById("gameOver");
+        const gameEl = document.getElementById("game");
+
+        function updateUI() {
+            scoreEl.textContent = `Score: ${score}`;
+            heartsEl.textContent = "❤".repeat(hearts);
+        }
+
+        function newTask() {
+            const a = Math.floor(Math.random() * 99) + 1;
+            const b = Math.floor(Math.random() * 99) + 1;
+            correctAnswer = a + b;
+            taskEl.textContent = `${a} + ${b} = ?`;
+            answerEl.value = "";
+            answerEl.focus();
+        }
+
+        answerEl.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                const userAnswer = Number(answerEl.value);
+
+                if (userAnswer === correctAnswer) {
+                    score++;
+                } else {
+                    hearts--;
+                }
+
+                updateUI();
+
+                if (hearts <= 0) {
+                    gameEl.style.display = "none";
+                    gameOverEl.style.display = "block";
+                } else {
+                    newTask();
+                }
+            }
+        });
+
+        // start game
+        updateUI();
+        newTask();
+    </script>
+
+</body>
+</html>
